@@ -9,8 +9,9 @@ app.listen(3000, () => {
 
 // Rutas
 app.get("/productos", async (req,res) => {
-    const connection = await database.getConnection();
-    const result = await connection.query("SELECT * FROM Roles");
+    const con = await database.getConnection();
+    const result = await con.query("SELECT * FROM Roles");
+    
 
     console.log(result);
 })
