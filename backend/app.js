@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const userRoutes = require('./src/routes/user.rutes');
+const loginRoutes = require('./src/routes/autentication.rutes');
 
 // Configuracion inicial
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.static(__dirname + "/public"));
 
 // Endpoints
 app.use('/user', userRoutes);
+app.use('/login', loginRoutes);
 
 // Iniciar el index
 app.get('/', (req,res) => res.sendFile(__dirname + "/views/index.html"));
