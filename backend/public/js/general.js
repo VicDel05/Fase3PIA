@@ -7,13 +7,18 @@ formPost.addEventListener('submit', async (e) => {
     const correo = e.target.txtcorreo.value;
     const contrasena = e.target.txtpass.value;
 
+    console.log(correo);
+    console.log(contrasena);
+
     await fetch('http://localhost:3000/login', {
-        method:'POST',
+        method:'GET',
         mode:'no-cors',
         headers:{
             'Content-Type' : 'application/json'
         },
-        body:JSON.stringify({ txtcorreo: correo, txtpass: contrasena }),
+        body: JSON.stringify({
+            correo: correo, contrasena: contrasena
+        }),
     }).then((response) => response.json()).then((data) => {
         message = data.message;
         console.log(message);
