@@ -43,7 +43,7 @@ app.get('/cuenta', (req,res) => res.sendFile(__dirname + "/views/cuenta.html"));
 app.get('/carrito', (req,res) => res.sendFile(__dirname + "/views/carrito.html"));
 
 
-// Prueba peticiones
+// Inicio de sesion
 app.post('/login', (req, res) => {
     const { correo, contrasena } = req.body;
   
@@ -56,7 +56,11 @@ app.post('/login', (req, res) => {
         const user = results[0];
   
         if (user.ContrasenaUsuario === contrasena) {
-          res.redirect('/miembroindex');
+            if (user.Roles_idRoles === 1) {
+                res.redirect("/inicioAdmin");
+              } else {
+                res.redirect("/miembroindex");
+              }
         } else {
           res.send('Invalid password');
         }
@@ -64,6 +68,21 @@ app.post('/login', (req, res) => {
         res.send('User not found');
       }
     });
-  });
+});
+
+// Registro (signup)
+app.post('/singup', (req, res) => {
+    const { nombre, apeillidop, apeillidom, correo, contrasena } = req.body;
+  
+    const sql = 'INSERT INTO Usuarios (NombreUsuaros, ApellidopUsuarios, ApellidomUsuario, CorreoUsuario, ContrasenaUsuario, Roles_idRoles) VALUES (?, ?, ?, ?, ?, 2)';
+    database.query(sql, [nombre, apeillidop, apeillidom, correo, contrasena], (err, result) => {
+      if (err) {
+        throw err;
+      }
+      res.redirect('/login');
+      res.send('Usuario registrado exitosamente');
+    });
+});
+  
 
 module.exports = app;
