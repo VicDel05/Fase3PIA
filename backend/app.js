@@ -48,7 +48,7 @@ app.get('/comentario', (req,res) => res.sendFile(__dirname + "/views/comentario.
 app.post('/login', (req, res) => {
     const { correo, contrasena } = req.body;
   
-    database.query('SELECT * FROM Usuarios WHERE CorreoUsuario = ?', [correo], (error, results) => {
+    database.query('SELECT * FROM Usuarios WHERE CorreoUsuario = ?;', [correo], (error, results) => {
       if (error) {
         throw error;
       }
@@ -75,16 +75,31 @@ app.post('/login', (req, res) => {
 app.post('/singup', (req, res) => {
     const { nombre, apeillidop, apeillidom, correo, contrasena } = req.body;
   
-    const sql = 'INSERT INTO Usuarios (NombreUsuaros, ApellidopUsuarios, ApellidomUsuario, CorreoUsuario, ContrasenaUsuario, Roles_idRoles) VALUES (?, ?, ?, ?, ?, 2)';
-    database.query(sql, [nombre, apeillidop, apeillidom, correo, contrasena], (err, result) => {
+    const query = 'INSERT INTO Usuarios (NombreUsuaros, ApellidopUsuarios, ApellidomUsuario, CorreoUsuario, ContrasenaUsuario, Roles_idRoles) VALUES (?, ?, ?, ?, ?, 2)';
+    database.query(query, [nombre, apeillidop, apeillidom, correo, contrasena], (err, result) => {
       if (err) {
         throw err;
       }
       res.redirect('/login');
-      res.send('Usuario registrado exitosamente');
+      //res.send('Usuario registrado exitosamente');
     });
 });
   
+// Registro (admin)
+app.post('/registro', (req, res) => {
+  const { nombre, apeillidop, apeillidom, correo, contrasena, rol } = req.body;
+
+  // Insert user into database
+  const query = 'INSERT INTO Usuarios (NombreUsuaros, ApellidopUsuarios, ApellidomUsuario, CorreoUsuario, ContrasenaUsuario, Roles_idRoles) VALUES (?, ?, ?, ?, ?, ?)';
+  database.query(query, [nombre, apeillidop, apeillidom, correo, contrasena, rol], (err, result) => {
+    if (err) {
+      throw err;
+    }
+    //res.redirect('/registro');
+    //res.send('Usuario registrado exitosamente');
+  });
+});
+
 // Comentarios 
 app.post('/comentario', async (req, res) => {
   const { comment  } = req.body;
