@@ -1,46 +1,30 @@
-// const formPost = document.getElementById('log');
-
-
-// formPost.addEventListener('submit', async (e) => {
-//     e.preventDefault();
-//     let message = '';
-//     const correo = e.target.txtcorreo.value;
-//     const contrasena = e.target.txtpass.value;
-
-//     console.log(correo);
-//     console.log(contrasena);
-
-//     await fetch('http://localhost:3000/login', {
-//         method:'GET',
-//         mode:'no-cors',
-//         headers:{
-//             'Content-Type' : 'application/json'
-//         },
-//         body: JSON.stringify({
-//             correo: correo, contrasena: contrasena
-//         }),
-//     }).then((response) => response.json()).then((data) => {
-//         message = data.message;
-//         console.log(message);
-//     });
-// })
-
-/*
-document.getElementById('log').addEventListener("submit", async (e) =>{
-    e.preventDefault();
-    const correo = e.target.children.correo.value;
-    const contrasena = e.target.children.contrasena.value;
-
-    const res = await fetch("http://localhost:3000/login", {
-        method:"POST",
-        headers:{
-            "Content-Type" : "application/json"
+$(document).ready(function() {
+    $('#form-coment').submit(function(e) {
+      e.preventDefault();
+  
+      const comment = $('#txtcomentario').val();
+  
+      $.ajax({
+        url: 'http://localhost:3000/comentario',
+        type: 'POST',
+        data: { comment: comment },
+        success: function(response) {
+          // Mostrar el modal de confirmación
+          $('#confirmationModal').modal('show');
+          // Limpiar el formulario
+          $('#comment').val('');
         },
-        body:JSON.stringify({
-            correo, contrasena
-        })
+        error: function() {
+          alert('Error al registrar el comentario');
+        }
+      });
     });
 
+    $('#confirmationModal').on('shown.bs.modal', function () {
+        $('#modal-image').addClass('zoom-out');
+      });
 
-});
-*/
+      $('#confirmationModal').on('hidden.bs.modal', function () {
+        $('#modal-image').removeClass('zoom-out');
+      });
+  });
