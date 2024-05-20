@@ -86,15 +86,16 @@ app.post('/singup', (req, res) => {
 });
   
 // Registro (admin)
-app.post('/registro', (req, res) => {
+app.post('/registro', async (req, res) => {
   const { nombre, apeillidop, apeillidom, correo, contrasena, rol } = req.body;
 
   // Insert user into database
   const query = 'INSERT INTO Usuarios (NombreUsuaros, ApellidopUsuarios, ApellidomUsuario, CorreoUsuario, ContrasenaUsuario, Roles_idRoles) VALUES (?, ?, ?, ?, ?, ?)';
-  database.query(query, [nombre, apeillidop, apeillidom, correo, contrasena, rol], (err, result) => {
+  await database.query(query, [nombre, apeillidop, apeillidom, correo, contrasena, rol], (err, result) => {
     if (err) {
       throw err;
     }
+    console.log("Usuario registrado");
     //res.redirect('/registro');
     //res.send('Usuario registrado exitosamente');
   });
@@ -104,7 +105,7 @@ app.post('/registro', (req, res) => {
 app.post('/comentario', async (req, res) => {
   const { comment  } = req.body;
   try {
-    await database.query('INSERT INTO comentarios (Comentario, Usuarios_idUsuarios) VALUES (?, 2);', [comment]);
+    await database.query('INSERT INTO comentarios (Comentario, Usuarios_idUsuarios) VALUES (?, 3);', [comment]);
     console.log("Comentario registrado");
     res.status(201).redirect('/comentario');
     //res.redirect('/comentario')

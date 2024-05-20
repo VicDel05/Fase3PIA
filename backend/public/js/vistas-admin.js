@@ -21,11 +21,14 @@ $(document).ready(function() {
           rol: rol 
         },
         success: function(response) {
-          console.log(response);
-          $("#createUserForm")[0].reset();
-          $("#adModal").modal("show");
+          $('#adModal').modal('show');
+          $("#txtnombre").val('');
+          $("#txtapellidop").val('');
+          $("#txtapellidom").val('');
+          $("#txtcorreo").val('');
+          $("#txtpass").val('');
+          $("#rol").val('');
           console.log("Usuario registro");
-          //$("#usersTable").DataTable().ajax.reload();
         },
         error: function(error) {
           console.log(error);
