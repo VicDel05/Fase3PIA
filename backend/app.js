@@ -36,6 +36,9 @@ app.get('/registro', (req,res) => res.sendFile(__dirname + "/views/registro.html
 app.get('/registroproducto', (req,res) => res.sendFile(__dirname + "/views/registroproducto.html"));
 app.get('/venta', (req,res) => res.sendFile(__dirname + "/views/venta.html"));
 app.get('/reporte', (req,res) => res.sendFile(__dirname + "/views/reporte.html"));
+app.get('/acercadeM', (req,res) => res.sendFile(__dirname + "/views/acercadeM.html"));
+app.get('/productoM', (req,res) => res.sendFile(__dirname + "/views/productoM.html"));
+app.get('/contactoM', (req,res) => res.sendFile(__dirname + "/views/contactanosM.html"));
 
 // Vistas miembro
 app.get('/miembroindex', (req,res) => res.sendFile(__dirname + "/views/miembroindex.html"));
@@ -117,16 +120,18 @@ app.post('/registroproducto', async (req,res)=>{
 })
 
 // Comentarios 
-app.post('/comentario', async (req, res) => {
+app.post('/comentario',  (req, res) => {
   const { comment  } = req.body;
-  try {
-    await database.query('INSERT INTO comentarios (Comentario, Usuarios_idUsuarios) VALUES (?, 3);', [comment]);
-    console.log("Comentario registrado");
-    res.status(201).redirect('/comentario');
-    //res.redirect('/comentario')
-  } catch (error) {
-    res.status(500).send('Error al agregar el comentario');
-  }
+
+    const query = 'INSERT INTO Comentarios (Comentario, Usuarios_idUsuarios) VALUES (?, 3);';
+  
+     database.query(query, [comment], (err,result) =>{
+      if (err) {
+        throw err;
+      }
+      console.log("Comentario registrado");
+      res.redirect('/comentario');
+    });
 });
 
 module.exports = app;

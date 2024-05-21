@@ -9,10 +9,11 @@ $(document).ready(function() {
         type: 'POST',
         data: { comment: comment },
         success: function(response) {
+          $('#txtcomentario').val("");
           // Mostrar el modal de confirmación
           $('#confirmationModal').modal('show');
           // Limpiar el formulario
-          $('#comment').val('');
+         
         },
         error: function() {
           alert('Error al registrar el comentario');
