@@ -35,4 +35,47 @@ $(document).ready(function() {
         }
       });
     });
+
+    $('#regProd').submit(function(e) {
+      e.preventDefault();
+  
+      const codigo = $('#txtcodigo').val();
+      const nombre = $('#txtnombreP').val();
+      const descripcion = $('#txtdescrip').val();
+      const categoria = $('#opccategoria').val();
+      const cantidad = $('#txtcantidad').val();
+      const precio = $('#txtprecio').val();
+      const imagen = $('#txtimg').val();
+  
+      $.ajax({
+        url: 'http://localhost:3000/registroproducto',
+        type: 'POST',
+        data: { codigo:codigo, nombre:nombre, descripcion:descripcion, categoria:categoria, cantidad:cantidad, precio:precio, imagen:imagen },
+        success: function(response) {
+          // Mostrar el modal de confirmación
+          $('#exampleModal').modal('show');
+          // Limpiar el formulario
+          $('#txtcodigo').val('');
+          $('#txtnombreP').val('');
+          $('#txtdescrip').val('');
+          $('#opccategoria').val('');
+          $('#txtcantidad').val('');
+          $('#txtprecio').val('');
+          $('#txtimg').val('');
+        },
+        error: function() {
+          alert('Error al registrar el producto');
+        }
+      });
+    });
+  
+    $('#exampleModal').on('shown.bs.modal', function () {
+        $('#modal-image').addClass('zoom-out');
+      });
+  
+      $('#exampleModal').on('hidden.bs.modal', function () {
+        $('#modal-image').removeClass('zoom-out');
+      });
+
+
 });

@@ -101,6 +101,21 @@ app.post('/registro', async (req, res) => {
   });
 });
 
+// Registro productos (admin)
+
+app.post('/registroproducto', async (req,res)=>{
+  const { codigo, nombre, descripcion, categoria, cantidad, precio, imagen } = req.body;
+
+  const query = `INSERT INTO Productos (CodigoProducto, NombreProducto, DescripcionProducto, CategoriaProducto_idCategoriaProducto, CantidadProducto, precioProducto, imagenProducto) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+
+  await database.query(query, [codigo, nombre, descripcion, categoria, cantidad, precio, imagen], (err,result) =>{
+    if (err) {
+      throw err;
+    }
+    console.log("Producto registrado");
+  })
+})
+
 // Comentarios 
 app.post('/comentario', async (req, res) => {
   const { comment  } = req.body;
