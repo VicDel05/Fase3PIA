@@ -23,7 +23,7 @@
                 <a class="nav-link text-primary" href="registro.php">Registro</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="registroproducto.php">Producto</a>
+                <a class="nav-link" href="registroproductos.php">Producto</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="venta.php">Venta</a>

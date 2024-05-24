@@ -41,17 +41,17 @@ if (!isset($_SESSION['correo']) || $_SESSION['rol'] != 1) {
                 </a>
             </div>
             <div class="col-12 col-md-6 mb-3">
-                <a href="/registroproducto" class="text-white links">
+                <a href="registroproductos.php" class="text-white links">
                 <div class="text-center rounded producto"><img src="img/agregar-producto.png" alt="producto" class="img-fluid imgopc"><p class="fw-light fs-5">Producto</p></div>
                 </a>
             </div>
             <div class="col-12 col-md-6 mb-3">
-                <a href="/venta" class="text-white links">
+                <a href="venta.php" class="text-white links">
                 <div class="text-center rounded venta"><img src="img/venta.png" alt="venta" class="img-fluid imgopc"><p class="fw-light fs-5">Venta</p></div>
                 </a>
             </div>
             <div class="col-12 col-md-6 mb-3">
-                <a href="/reporte" class="text-white links">
+                <a href="reporte.php" class="text-white links">
                 <div class="text-center rounded reporte"><img src="img/reporte.png" alt="reporte" class="img-fluid imgopc"><p class="fw-light fs-5">Reporte</p></div>
                 </a>
             </div>
