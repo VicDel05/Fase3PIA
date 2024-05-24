@@ -37,7 +37,7 @@ $usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
                       <li class="nav-item"><a class="nav-link" href="login.php">Iniciar sesión</a></li>
                     <?php endif; ?>
                     <?php if ($usuario_registrado): ?>
-                      <li class="nav-item"><a class="nav-link" href="#">Comentarios</a></li>
+                      <li class="nav-item"><a class="nav-link" href="comentario.php">Comentarios</a></li>
                       <li class="nav-item"><a class="nav-link" href="#">Carrito</a></li>
                       <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Cuenta</a>
