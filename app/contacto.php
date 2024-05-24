@@ -1,3 +1,8 @@
+<?php
+session_start();
+$usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -20,7 +25,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="acercade,php">Acerca de</a>
+                <a class="nav-link" aria-current="page" href="acercade.php">Acerca de</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="producto.php">Productos</a>
@@ -29,13 +34,18 @@
                 <a class="nav-link text-primary" href="contacto.php">Contacto</a>
               </li>
               <?php if (!$usuario_registrado): ?>
-                        <li class="nav-item"><a class="nav-link" href="login.php">Iniciar sesión</a></li>
+                      <li class="nav-item"><a class="nav-link" href="login.php">Iniciar sesión</a></li>
                     <?php endif; ?>
                     <?php if ($usuario_registrado): ?>
-                        <li class="nav-item"><a class="nav-link" href="#">Comentarios</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Cuenta</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Carrito</a></li>
-                        <li class="nav-item"><a class="nav-link" href="logout.php">Cerrar Sesión</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#">Comentarios</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#">Carrito</a></li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Cuenta</a>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="#"><img src="img/usuario.png" alt="" class="img-fluid imglogout">Mi cuenta</a></li>
+                          <li><a class="dropdown-item" href="logout.php"><img src="img/cerrar-sesion.png" alt="logout" class="img-fluid imglogout">Cerrar sesión</a></li>
+                        </ul>
+                      </li>
                     <?php endif; ?>
             </ul>
             <form class="d-flex" role="search">

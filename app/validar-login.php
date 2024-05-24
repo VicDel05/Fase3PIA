@@ -33,7 +33,7 @@ if (isset($_POST['correo']) && isset($_POST['contrasena'])) {
                 exit;
             } else if ($Roles_idRoles == 2) {
                 // Usuario es cliente, redirigir a la interfaz de usuario
-                header("Location: miembro.php");
+                header("Location: index.php");
                 exit;
             } else {
                 echo "Rol de usuario no válido. <br>";

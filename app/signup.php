@@ -26,7 +26,7 @@
                    <img src="img/QC-logo.png" alt="logo" class="img-fluid img1">
                 </div>
                 <div class="col-12 col-lg-8 m-auto">
-                    <form action="/singup" method="post">
+                    <form action="validar-signup.php" method="post">
                         <label class="mt-2" for="txtnombre">Nombre</label>
                         <input type="text" class="form-control" name="nombre" id="txtnombre">
                         <label class="mt-2" for="txtapellidop">Apellido Parteno</label>

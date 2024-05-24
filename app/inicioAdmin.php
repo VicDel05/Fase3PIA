@@ -36,7 +36,7 @@ if (!isset($_SESSION['correo']) || $_SESSION['rol'] != 1) {
         <?php echo "<h1>Bienvenido, " . $_SESSION['correo'] . "!</h1>"; ?>
         <div class="row opc">
             <div class="col-12 col-md-6 mb-3" id="reg">
-                <a href="/registro" class="text-white links">
+                <a href="registro.php" class="text-white links">
                 <div class="text-center rounded registro"><img src="img/anadir.png" alt="registro" class="img-fluid imgopc"><p class="fw-light fs-5">Registro</p></div>
                 </a>
             </div>
