@@ -1,0 +1,57 @@
+.formulario{
+    background-color: #b2d9f7;
+}
+
+.barraNav{
+    background-color: #b2d9f7;
+}
+
+.mail, .face, .ig{
+    display: inline;
+    text-align: center;
+    padding: 10px;
+    margin-right: 10px;
+    width: 100px;
+}
+
+.mail{
+    background-color: red;
+    color: white;
+}
+
+.face{
+    background-color: blue;
+    color: white;
+}
+
+.ig{
+    margin-right: 0;
+    background-color: pink;
+    color: white;
+}
+
+.ilus{
+    height: 25px;
+}
+
+.imglogout{
+    height: 30px;
+}
+
+.modalstyle{
+    background-color: #52b2fc;
+    color: white;
+}
+
+.zoom-out {
+    animation: zoomOut 1s forwards;
+  }
+
+  @keyframes zoomOut {
+    from {
+      transform: scale(1.5);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
