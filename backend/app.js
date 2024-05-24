@@ -106,12 +106,12 @@ app.post('/registro', async (req, res) => {
 
 // Registro productos (admin)
 
-app.post('/registroproducto', async (req,res)=>{
+app.post('/registroproducto',  (req,res)=>{
   const { codigo, nombre, descripcion, categoria, cantidad, precio, imagen } = req.body;
 
   const query = `INSERT INTO Productos (CodigoProducto, NombreProducto, DescripcionProducto, CategoriaProducto_idCategoriaProducto, CantidadProducto, precioProducto, imagenProducto) VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
-  await database.query(query, [codigo, nombre, descripcion, categoria, cantidad, precio, imagen], (err,result) =>{
+   database.query(query, [codigo, nombre, descripcion, categoria, cantidad, precio, imagen], (err,result) =>{
     if (err) {
       throw err;
     }
@@ -123,7 +123,7 @@ app.post('/registroproducto', async (req,res)=>{
 app.post('/comentario',  (req, res) => {
   const { comment  } = req.body;
 
-    const query = 'INSERT INTO Comentarios (Comentario, Usuarios_idUsuarios) VALUES (?, 3);';
+    const query = 'INSERT INTO Comentarios (Comentario, Usuarios_idUsuarios) VALUES (?, 2);';
   
      database.query(query, [comment], (err,result) =>{
       if (err) {

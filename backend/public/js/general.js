@@ -9,9 +9,10 @@ $(document).ready(function() {
         type: 'POST',
         data: { comment: comment },
         success: function(response) {
-          $('#txtcomentario').val("");
+          
           // Mostrar el modal de confirmación
           $('#confirmationModal').modal('show');
+          $('#txtcomentario').val("");
           // Limpiar el formulario
          
         },

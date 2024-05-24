@@ -55,13 +55,13 @@ $(document).ready(function() {
           // Mostrar el modal de confirmación
           $('#exampleModal').modal('show');
           // Limpiar el formulario
-          $('#txtcodigo').val('');
-          $('#txtnombreP').val('');
-          $('#txtdescrip').val('');
-          $('#opccategoria').val('');
-          $('#txtcantidad').val('');
-          $('#txtprecio').val('');
-          $('#txtimg').val('');
+          $('#txtcodigo').val("");
+          $('#txtnombreP').val("");
+          $('#txtdescrip').val("");
+          $('#opccategoria').val("");
+          $('#txtcantidad').val("");
+          $('#txtprecio').val("");
+          $('#txtimg').val("");
         },
         error: function() {
           alert('Error al registrar el producto');
