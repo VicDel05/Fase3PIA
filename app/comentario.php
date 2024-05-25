@@ -1,6 +1,12 @@
 <?php
-session_start();
-$usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+$conexion = mysqli_connect("localhost", "root", "", "mydb");
+if (!$conexion) {
+  die("Conexión fallida: " . mysqli_connect_error());
+}
 ?>
 
 <!DOCTYPE html>
@@ -33,8 +39,10 @@ $usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
               <li class="nav-item">
                 <a class="nav-link" href="contacto.php">Contacto</a>
               </li>
-              <?php if (!$usuario_registrado): ?>
-                      <li class="nav-item"><a class="nav-link" href="login.php">Iniciar sesión</a></li>
+              <?php
+                    $usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
+                    if (!$usuario_registrado): ?>
+                        <li class="nav-item"><a class="nav-link" href="login.php">Iniciar Sesión</a></li>
                     <?php endif; ?>
                     <?php if ($usuario_registrado): ?>
                       <li class="nav-item"><a class="nav-link text-primary" href="comentario.php">Comentarios</a></li>
@@ -56,10 +64,13 @@ $usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
         </div>
     </nav>
 
+    
+    <?php if ($usuario_registrado): ?>
+
     <div class="container">
         <h1 class="fw-normal mt-3">Comentarios</h1>
 
-        <form action="validar-comentario.php" method="POST">
+        <form action="validar-comentario.php" method="POST" >
             <label for="txtcomentario" class="fw-light">Nos gustaria conocer su opinión</label><br>
             <textarea class="form-control" name="comentario" id="txtcomentario" cols="30" rows="10" required></textarea>
             <div class="mt-3">
@@ -67,7 +78,7 @@ $usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
             </div>
         </form>
     </div>
-
+    <?php endif; ?>
 
 
     <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">

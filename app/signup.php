@@ -28,15 +28,15 @@
                 <div class="col-12 col-lg-8 m-auto">
                     <form action="validar-signup.php" method="post">
                         <label class="mt-2" for="txtnombre">Nombre</label>
-                        <input type="text" class="form-control" name="nombre" id="txtnombre">
+                        <input type="text" class="form-control" name="nombre" required>
                         <label class="mt-2" for="txtapellidop">Apellido Parteno</label>
-                        <input type="text" class="form-control" name="apeillidop" id="txtapellidop">
+                        <input type="text" class="form-control" name="apeillidop" required>
                         <label class="mt-2" for="txtapellidom">Apellido Materno</label>
-                        <input type="text" class="form-control" name="apeillidom" id="txtapellidom">
+                        <input type="text" class="form-control" name="apeillidom" required>
                         <label class="mt-2" for="txtcorreo">Correo</label>
-                        <input type="text" class="form-control" name="correo" id="txtcorreo" placeholder="example@gmail.com">
+                        <input type="text" class="form-control" name="correo" placeholder="example@gmail.com" required>
                         <label class="mt-2" for="txtpass">Contraseña</label>
-                        <input type="password" class="form-control" name="contrasena" id="txtpass">
+                        <input type="password" class="form-control" name="contrasena" required>
                         <div class="mt-3">
                             <button type="submit" class="btn btn-light">Ingresar</button>
                         </div>

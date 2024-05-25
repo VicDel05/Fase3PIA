@@ -1,21 +1,21 @@
 <?php
-session_start();
+  session_start();
 
-// Verificar si el usuario ha iniciado sesión y es administrador
-if (!isset($_SESSION['correo']) || $_SESSION['rol'] != 1) {
-    header("Location: login.php");
-    exit;
-}
+  // Verificar si el usuario ha iniciado sesión y es administrador
+  if (!isset($_SESSION['correo']) || $_SESSION['rol'] != 1) {
+      header("Location: login.php");
+      exit;
+  }
 
-$conexion = mysqli_connect("localhost", "root", "", "mydb");
-if (!$conexion) {
-    die("Conexión fallida: " . mysqli_connect_error());
-}
+  $conexion = mysqli_connect("localhost", "root", "", "mydb");
+  if (!$conexion) {
+      die("Conexión fallida: " . mysqli_connect_error());
+  }
 
-$query = "SELECT * FROM Productos";
-$result = $conexion->query($query);
+  $query = "SELECT * FROM Productos INNER JOIN CategoriaProducto ON Productos.CategoriaProducto_idCategoriaProducto = CategoriaProducto.idCategoriaProducto ";
+  $result = $conexion->query($query);
 
-mysqli_close($conexion);
+  mysqli_close($conexion);
 
 ?>
 
@@ -80,18 +80,18 @@ mysqli_close($conexion);
                 <div class="mb-3">
                     <label for="opccategoria" class="form-label">Categoria del producto</label>
                     <select id="opccategoria" class="form-select" name="categoria">
-                    <option value="1">Cuadernos y libretas</option>
-                    <option value="2">Hojas y Papeles</option>
-                    <option value="3">Carpetas y Archivadore</option>
-                    <option value="4">Bolígrafos y Plumas</option>
-                    <option value="5">Lápices y Portaminas</option>
-                    <option value="6">Rotuladores, Marcadores y Plumones</option>
-                    <option value="7">Crayones y Ceras</option>
-                    <option value="8">Grapadoras y Perforadoras</option>
-                    <option value="9">Clips, cintas y Sujetapapeles</option>
-                    <option value="10">Tijeras y Cúteres</option>
-                    <option value="11">Organizadores y Carpetas</option>
-                    <option value="12">Pinturas</option>
+                    <option selected disable>Seleccione una categoria</option>
+                    <?php 
+                      $conexion = mysqli_connect("localhost", "root", "", "mydb");
+                      if (!$conexion) {
+                          die("Conexión fallida: " . mysqli_connect_error());
+                      }
+
+                      $sql = $conexion->query("SELECT * FROM CategoriaProducto");
+                      while($resultado = $sql->fetch_assoc()){
+                        echo "<option value='".$resultado['idCategoriaProducto']."'>".$resultado['NombreCategoria']."</option>";
+                      }
+                    ?>
                     </select>
                 </div>
                 <div class="mb-3">
@@ -126,17 +126,18 @@ mysqli_close($conexion);
                     </thead>
                     <tbody id="tablaproducto">
                     <?php if ($result->num_rows > 0): ?>
-                <?php while($row = $result->fetch_assoc()): ?>
+                  <?php while($row = $result->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo $row['idProductos']; ?></td>
                         <td><?php echo $row['CodigoProducto']; ?></td>
                         <td><?php echo $row['NombreProducto']; ?></td>
                         <td><?php echo $row['DescripcionProducto']; ?></td>
-                        <td><?php echo $row['CategoriaProducto_idCategoriaProducto']; ?></td>
+                        <td><?php echo $row['NombreCategoria']; ?></td>
                         <td><?php echo $row['CantidadProducto']; ?></td>
                         <td><?php echo $row['precioProducto']; ?></td>
                         <td>
-                            <a href="update.php?id=<?php echo $row['id']; ?>" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modProducto"><img src="img/editar.png" alt="update" width="20px"></a>
+                        
+                            <a href="#" class="btn btn-warning" id="edit-btn" data-bs-toggle="modal" data-bs-target="#modProducto" data-bs-id="<?= $row['idProductos'] ?>"><img src="img/editar.png" alt="update" width="20px"></a>
                             <a href="delete.php?id=<?php echo $row['id']; ?>" class="btn btn-danger"><img src="img/basura.png" alt="delete" width="20px"></a>
                         </td>
                     </tr>
@@ -153,24 +154,6 @@ mysqli_close($conexion);
 
         
     </div>
-    
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmación</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            Producto registrado exitosamente
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <?php include("views/modproducto.php"); ?>
 
@@ -179,5 +162,44 @@ mysqli_close($conexion);
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <!-- JS -->
+    <script>
+      let editarmodal = document.getElementById('modProducto');
+      editarmodal.addEventListener('shown.bs.modal', event =>{
+        let button = event.relatedTarget;
+        let id = button.getAttribute('data-bs-id');
+        
+        let inputId = editarmodal.querySelector('.modal-body #id');
+        let inputCodigo = editarmodal.querySelector('.modal-body #txtcodigo');
+        let inputNombre = editarmodal.querySelector('.modal-body #txtnombreP');
+        let inputDescrip = editarmodal.querySelector('.modal-body #txtdescrip');
+        let inputCategoria = editarmodal.querySelector('.modal-body #opccategoria');
+        let inputCantidad = editarmodal.querySelector('.modal-body #txtcantidad');
+        let inputPrecio = editarmodal.querySelector('.modal-body #txtprecio');
+        let inputImagen = editarmodal.querySelector('.modal-body #txtimg');
+
+        let url = "getProducto.php";
+        let formData = new FormData();
+        formData.append('id', id);
+
+        fetch(url, {
+          method: 'POST',
+          body: formData
+        }).then(response => response.json())
+        .then(data =>{
+
+          inputId.value = data.id
+          inputCodigo.value = data.codigo
+          inputNombre.value = data.nombre
+          inputDescrip.value = data.descripcion
+          inputCategoria.value = data.categoria
+          inputCantidad.value = data.cantidad
+          inputPrecio.value = data.precio
+          inputImagen.value = data.imagen
+
+        }).catch(err => console.log(err);)
+
+
+      })
+    </script>
 </body>
 </html>

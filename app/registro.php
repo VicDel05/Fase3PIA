@@ -1,3 +1,24 @@
+<?php
+  session_start();
+
+  // Verificar si el usuario ha iniciado sesión y es administrador
+  if (!isset($_SESSION['correo']) || $_SESSION['rol'] != 1) {
+      header("Location: login.php");
+      exit;
+  }
+
+  $conexion = mysqli_connect("localhost", "root", "", "mydb");
+  if (!$conexion) {
+      die("Conexión fallida: " . mysqli_connect_error());
+  }
+
+  $query = "SELECT * FROM Usuarios INNER JOIN Roles ON Usuarios.Roles_idRoles = Roles.idRoles";
+  $result = $conexion->query($query);
+
+  mysqli_close($conexion);
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -40,30 +61,73 @@
     </nav>
     
     <div class="container">
-        <h1 class="fw-normal mt-3">Registro de usuarios</h1>
-        <form id="createUserForm">
-          <label class="mt-2" for="txtnombre">Nombre</label>
-          <input type="text" class="form-control" name="nombre" id="txtnombre">
-          <label class="mt-2" for="txtapellidop">Apellido Parteno</label>
-          <input type="text" class="form-control" name="apeillidop" id="txtapellidop">
-          <label class="mt-2" for="txtapellidom">Apellido Materno</label>
-          <input type="text" class="form-control" name="apeillidom" id="txtapellidom">
-          <label class="mt-2" for="txtcorreo">Correo</label>
-          <input type="text" class="form-control" name="correo" id="txtcorreo" placeholder="example@gmail.com">
-          <label class="mt-2" for="txtpass">Contraseña</label>
-          <input type="password" class="form-control" name="contrasena" id="txtpass">
-          <label for="rol" class="form-label">Rol</label>
-          <select id="rol" class="form-select">
-            <option selected value="1">Administrador</option>
-            <option value="2">Miembro</option>
-          </select>
-          <div class="mt-3">
-              <button type="submit" class="btn btn-success mx-3 mb-3">Crear</button>
-              <button type="" class="btn btn-warning mx-3 mb-3">Modificar</button>
-              <button type="" class="btn btn-primary mx-3 mb-3">Buscar</button>
-              <button type="" class="btn btn-danger mx-3 mb-3">Eliminar</button>
-          </div>
-      </form>
+      <h1 class="fw-normal mt-3">Registro de usuarios</h1>
+      <div class="row">
+        <div class="col-12 col-md-4">
+          <form id="createUserForm">
+            <label class="mt-2" for="txtnombre">Nombre</label>
+            <input type="text" class="form-control" name="nombre" id="txtnombre">
+            <label class="mt-2" for="txtapellidop">Apellido Parteno</label>
+            <input type="text" class="form-control" name="apeillidop" id="txtapellidop">
+            <label class="mt-2" for="txtapellidom">Apellido Materno</label>
+            <input type="text" class="form-control" name="apeillidom" id="txtapellidom">
+            <label class="mt-2" for="txtcorreo">Correo</label>
+            <input type="text" class="form-control" name="correo" id="txtcorreo" placeholder="example@gmail.com">
+            <label class="mt-2" for="txtpass">Contraseña</label>
+            <input type="password" class="form-control" name="contrasena" id="txtpass">
+            <label for="rol" class="form-label">Rol</label>
+            <select id="rol" class="form-select">
+              <option selected disable>Seleccione un rol</option>
+              <?php 
+                      $conexion = mysqli_connect("localhost", "root", "", "mydb");
+                      if (!$conexion) {
+                          die("Conexión fallida: " . mysqli_connect_error());
+                      }
+
+                      $sql = $conexion->query("SELECT * FROM Roles");
+                      while($resultado = $sql->fetch_assoc()){
+                        echo "<option value='".$resultado['idRoles']."'>".$resultado['NombreRol']."</option>";
+                      }
+                    ?>
+            </select>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-success mx-3 mb-3">Crear</button>
+            </div>
+          </form>
+        </div>
+        <div class="col-12 col-md-8">
+          <table class="table ">
+                      <thead>
+                          <tr>
+                              <th>ID</th>
+                              <th>Nombre</th>
+                              <th>Correo</th>
+                              <th>Rol</th>
+                          </tr>
+                      </thead>
+                      <tbody id="tablaproducto">
+                      <?php if ($result->num_rows > 0): ?>
+                      <?php while($row = $result->fetch_assoc()): ?>
+                      <tr>
+                          <td><?php echo $row['idUsuarios']; ?></td>
+                          <td><?php echo $row['NombreUsuaros']; ?></td>
+                          <td><?php echo $row['CorreoUsuario']; ?></td>
+                          <td><?php echo $row['NombreRol']; ?></td>
+                          <td>
+                              <a href="#" class="btn btn-warning" id="edit-btn" data-bs-toggle="modal" data-bs-target="#editModal" data-bs-id="<?= $row['idUsuarios'] ?>"><img src="img/editar.png" alt="update" width="20px"></a>
+                              <a href="delete.php?id=<?php echo $row['id']; ?>" class="btn btn-danger"><img src="img/basura.png" alt="delete" width="20px"></a>
+                          </td>
+                      </tr>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="4" class="text-center">No hay registros</td>
+                            </tr>
+                        <?php endif; ?>
+                      </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
 
@@ -76,6 +140,49 @@
           </div>
           <div class="modal-body text-white">
             Registro exitoso
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Usuario</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="createUserForm">
+              <label class="mt-2" for="txtnombre">Nombre</label>
+              <input type="text" class="form-control" name="nombre" id="txtnombre">
+              <label class="mt-2" for="txtapellidop">Apellido Parteno</label>
+              <input type="text" class="form-control" name="apeillidop" id="txtapellidop">
+              <label class="mt-2" for="txtapellidom">Apellido Materno</label>
+              <input type="text" class="form-control" name="apeillidom" id="txtapellidom">
+              <label class="mt-2" for="txtcorreo">Correo</label>
+              <input type="text" class="form-control" name="correo" id="txtcorreo" placeholder="example@gmail.com">
+              <label class="mt-2" for="txtpass">Contraseña</label>
+              <input type="password" class="form-control" name="contrasena" id="txtpass">
+              <label for="rol" class="form-label">Rol</label>
+              <select id="rol" class="form-select">
+                <option selected disable>Seleccione un rol</option>
+                <?php 
+                        $conexion = mysqli_connect("localhost", "root", "", "mydb");
+                        if (!$conexion) {
+                            die("Conexión fallida: " . mysqli_connect_error());
+                        }
+
+                        $sql = $conexion->query("SELECT * FROM Roles");
+                        while($resultado = $sql->fetch_assoc()){
+                          echo "<option value='".$resultado['idRoles']."'>".$resultado['NombreRol']."</option>";
+                        }
+                      ?>
+              </select>
+            </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
