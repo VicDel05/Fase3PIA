@@ -58,63 +58,54 @@ $usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
 
     <div class="container">
         <h1 class="fw-normal mt-3">Nuestros productos</h1>
+        <?php 
 
-        <div class="row">
-            <div class="col-12 col-md-4">
-                <div class="card mt-2" aria-hidden="true" style="width: 18rem;">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title placeholder-glow">
-                        <span class="placeholder col-6"></span>
-                      </h5>
-                      <p class="card-text placeholder-glow">
-                        <span class="placeholder col-7"></span>
-                        <span class="placeholder col-4"></span>
-                        <span class="placeholder col-4"></span>
-                        <span class="placeholder col-6"></span>
-                        <span class="placeholder col-8"></span>
-                      </p>
-                      <a class="btn btn-primary disabled placeholder col-6" aria-disabled="true"></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-4">
-                <div class="card mt-2" aria-hidden="true" style="width: 18rem;">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title placeholder-glow">
-                        <span class="placeholder col-6"></span>
-                      </h5>
-                      <p class="card-text placeholder-glow">
-                        <span class="placeholder col-7"></span>
-                        <span class="placeholder col-4"></span>
-                        <span class="placeholder col-4"></span>
-                        <span class="placeholder col-6"></span>
-                        <span class="placeholder col-8"></span>
-                      </p>
-                      <a class="btn btn-primary disabled placeholder col-6" aria-disabled="true"></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-4">
-                <div class="card mt-2" aria-hidden="true" style="width: 18rem;">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title placeholder-glow">
-                        <span class="placeholder col-6"></span>
-                      </h5>
-                      <p class="card-text placeholder-glow">
-                        <span class="placeholder col-7"></span>
-                        <span class="placeholder col-4"></span>
-                        <span class="placeholder col-4"></span>
-                        <span class="placeholder col-6"></span>
-                        <span class="placeholder col-8"></span>
-                      </p>
-                      <a class="btn btn-primary disabled placeholder col-6" aria-disabled="true"></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        $conexion = mysqli_connect("localhost", "root", "", "mydb");
+        if (!$conexion) {
+          die("Conexión fallida: " . mysqli_connect_error());
+        }
+
+
+          // Consulta SQL para obtener los productos
+          $sql = "SELECT * FROM productos";
+
+          // Ejecutar consulta
+          $result = $conexion->query($sql);
+
+          // Verificar si hay resultados
+          if ($result->num_rows > 0) {
+            echo '<div class="row">';
+            // Mostrar los productos en tarjetas
+            $contador = 0;
+            while($row = $result->fetch_assoc()) {
+                ?>
+                <!-- <div class="row"> -->
+                  <div class="col-12 col-md-4">
+                      <div class="card mt-2 shadow-sm h-100" style="width: 18rem;">
+                          <img src="<?php echo $row["imagenProducto"]; ?>" alt="<?php echo $row["NombreProducto"]; ?>" class="card-img-top" height="200px">
+                          <div class="card-body">
+                              <h5 class="card-title"><?php echo $row["NombreProducto"]; ?></h5>
+                              <p class="card-text"><?php echo $row["DescripcionProducto"]; ?></p>
+                              <p class="card-text">Precio: $<?php echo $row["precioProducto"]; ?> </p>
+                              <a href="#" class="btn btn-primary">Agregar al carrito</a>
+                          </div>
+                      </div>
+                  </div>
+                <!-- </div> -->
+                <?php
+                $contador++;
+                if ($contador % 3 == 0) {
+                    echo '</div><div class="row">';
+                }
+            }
+            echo '</div>';
+          } else {
+            echo "No hay productos";
+          }
+
+          // Cerrar conexión
+          $conn->close();
+          ?>
     </div>
 
     

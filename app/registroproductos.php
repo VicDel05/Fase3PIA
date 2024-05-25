@@ -13,12 +13,7 @@ if (!$conexion) {
 }
 
 $query = "SELECT * FROM Productos";
-$resultado = mysqli_query($conexion, $query);
-$productos = [];
-
-while ($fila = mysqli_fetch_assoc($resultado)) {
-    $productos[] = $fila;
-}
+$result = $conexion->query($query);
 
 mysqli_close($conexion);
 
@@ -68,8 +63,8 @@ mysqli_close($conexion);
     <div class="container">
         <h1 class="fw-normal mt-3">Productos</h1>
         <div class="row">
-            <div class="col-12 col-md-6">
-                <form id="regProd">
+            <div class="col-12 col-md-4">
+                <form action="validar-producto.php" method="POST">
                 <div class="mb-3">
                     <label for="txtcodigo" class="form-label">Código del producto (5 caracteres)</label>
                     <input type="text" class="form-control" id="txtcodigo" placeholder="LP244" name="codigo">
@@ -80,12 +75,12 @@ mysqli_close($conexion);
                 </div>
                 <div class="mb-3">
                     <label for="txtdescrip" class="form-label">Descripcion del producto</label>
-                    <textarea class="form-control" id="txtdescrip" rows="3"></textarea>
+                    <textarea class="form-control" id="txtdescrip" rows="3" name="descripcion"></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="opccategoria" class="form-label">Categoria del producto</label>
-                    <select id="opccategoria" class="form-select">
-                    <option selected value="1">Cuadernos y libretas</option>
+                    <select id="opccategoria" class="form-select" name="categoria">
+                    <option value="1">Cuadernos y libretas</option>
                     <option value="2">Hojas y Papeles</option>
                     <option value="3">Carpetas y Archivadore</option>
                     <option value="4">Bolígrafos y Plumas</option>
@@ -113,13 +108,10 @@ mysqli_close($conexion);
                 </div>
                     <div class="mt-3">
                     <button type="submit" class="btn btn-success mx-3 mb-3">Crear</button>
-                    <button type="" class="btn btn-warning mx-3 mb-3">Modificar</button>
-                    <button type="" class="btn btn-primary mx-3 mb-3">Buscar</button>
-                    <button type="" class="btn btn-danger mx-3 mb-3">Eliminar</button>
                     </div>
                 </form>
             </div>
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-8">
                 <table class="table tb">
                     <thead>
                         <tr>
@@ -133,7 +125,27 @@ mysqli_close($conexion);
                         </tr>
                     </thead>
                     <tbody id="tablaproducto">
-
+                    <?php if ($result->num_rows > 0): ?>
+                <?php while($row = $result->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo $row['idProductos']; ?></td>
+                        <td><?php echo $row['CodigoProducto']; ?></td>
+                        <td><?php echo $row['NombreProducto']; ?></td>
+                        <td><?php echo $row['DescripcionProducto']; ?></td>
+                        <td><?php echo $row['CategoriaProducto_idCategoriaProducto']; ?></td>
+                        <td><?php echo $row['CantidadProducto']; ?></td>
+                        <td><?php echo $row['precioProducto']; ?></td>
+                        <td>
+                            <a href="update.php?id=<?php echo $row['id']; ?>" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modProducto"><img src="img/editar.png" alt="update" width="20px"></a>
+                            <a href="delete.php?id=<?php echo $row['id']; ?>" class="btn btn-danger"><img src="img/basura.png" alt="delete" width="20px"></a>
+                        </td>
+                    </tr>
+                          <?php endwhile; ?>
+                      <?php else: ?>
+                          <tr>
+                              <td colspan="4" class="text-center">No hay registros</td>
+                          </tr>
+                      <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -160,48 +172,12 @@ mysqli_close($conexion);
       </div>
     </div>
 
+    <?php include("views/modproducto.php"); ?>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <!-- JS -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const producto = <?php echo json_encode($productos); ?>;
-            // const searchInput = document.getElementById('termino_busqueda');
-            const tableBody = document.getElementById('tablaproducto');
-
-            function mostrarProducto(filtradas) {
-                tableBody.innerHTML = '';
-                filtradas.forEach(cita => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${producto.idProductos}</td>
-                        <td>${producto.CodigoProducto}</td>
-                        <td>${producto.NombreProducto}</td>
-                        <td>${producto.DescripcionProducto}</td>
-                        <td>${producto.CategoriaProducto_idCategoriaProducto}</td>
-                        <td>${producto.CantidadProducto}</td>
-                        <td>${producto.precioProducto}</td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            }
-
-            searchInput.addEventListener('input', function() {
-                const termino = searchInput.value.toLowerCase();
-                const filtradas = citas.filter(cita => 
-                    cita.IdCita.toString().includes(termino) || 
-                    cita.FechaCita.toLowerCase().includes(termino) || 
-                    cita.HoraCita.toLowerCase().includes(termino) || 
-                    cita.UsuarioIdUsuario.toString().includes(termino)
-                );
-                mostrarCitas(filtradas);
-            });
-
-            mostrarCitas(citas);
-        });
-    </script>
 </body>
 </html>
