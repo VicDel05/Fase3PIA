@@ -95,7 +95,7 @@ $usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
                 <?php
                 $contador++;
                 if ($contador % 3 == 0) {
-                    echo '</div><div class="row">';
+                    echo '</div><div class="row mt-3">';
                 }
             }
             echo '</div>';

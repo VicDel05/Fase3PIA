@@ -12,9 +12,50 @@ session_start();
       die("Conexión fallida: " . mysqli_connect_error());
   }
 
+
+  $idEtiqueta = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+  $sql = "SELECT * FROM Productos WHERE idProductos = $idEtiqueta";
+  $res = $conexion->query($sql);
+
+
   $query = "SELECT * FROM Productos INNER JOIN CategoriaProducto ON Productos.CategoriaProducto_idCategoriaProducto = CategoriaProducto.idCategoriaProducto ";
   $result = $conexion->query($query);
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Datos del formulario
+        $codigo = $_POST['codigo'];
+        $nombre = $_POST['nombre'];
+        $descripcion = $_POST['descripcion'];
+        $categoria = $_POST['categoria'];
+        $cantidad = $_POST['cantidad'];
+        $precio = $_POST['precio'];
+        $imagen = $_POST['imagen'];
+        // Actualiza la etiqueta
+        
+        $sql = "UPDATE Productos SET CodigoProducto ='$codigo',NombreProducto='$nombre',DescripcionProducto='$descripcion',CantidadProducto='$cantidad',precioProducto='$precio',CategoriaProducto_idCategoriaProducto='$categoria',imagenProducto='$imagen' WHERE idProductos='$idEtiqueta'"; 
     
+        // Vincular parámetros y ejecutar la consulta
+        
+        $exc = $conexion->query($sql);
+        // Redirigir después de la actualización
+        header("Location: registroproductos.php");
+        exit();
+    }
+
+  if ($res->num_rows > 0) {
+    // Crear un array para almacenar los datos de las etiquetas
+    $productos = array();
+
+    // Recorrer los resultados y guardarlos en el array
+    while ($fila = $res->fetch_assoc()) {
+        $productos[] = $fila;
+    }
+    } else {
+    // Si no hay resultados, mostrar un mensaje
+    echo "<p>No se encontraron etiquetas.</p>";
+}
+
   mysqli_close($conexion);
 
 ?>
@@ -64,52 +105,54 @@ session_start();
         <h1 class="fw-normal mt-3">Productos</h1>
         <div class="row">
             <div class="col-12 col-md-4">
-                <form action="validar-producto.php" method="POST">
-                <div class="mb-3">
-                    <label for="txtcodigo" class="form-label">Código del producto (5 caracteres)</label>
-                    <input type="text" class="form-control" id="txtcodigo" placeholder="LP244" name="codigo">
-                </div>
-                <div class="mb-3">
-                    <label for="txtnombreP" class="form-label">Nombre del producto</label>
-                    <input type="text" class="form-control" id="txtnombreP" placeholder="Pluma" name="nombre">
-                </div>
-                <div class="mb-3">
-                    <label for="txtdescrip" class="form-label">Descripcion del producto</label>
-                    <textarea class="form-control" id="txtdescrip" rows="3" name="descripcion"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="opccategoria" class="form-label">Categoria del producto</label>
-                    <select id="opccategoria" class="form-select" name="categoria">
-                    <option selected disable>Seleccione una categoria</option>
-                    <?php 
-                      $conexion = mysqli_connect("localhost", "root", "", "mydb");
-                      if (!$conexion) {
-                          die("Conexión fallida: " . mysqli_connect_error());
-                      }
+                <?php foreach ($productos as $producto) {  ?>
+                <form action="" method="POST">
+                    <div class="mb-3">
+                        <label for="txtcodigo" class="form-label">Código del producto (5 caracteres)</label>
+                        <input type="text" class="form-control" id="txtcodigo" placeholder="LP244" name="codigo" value="<?php echo $producto['CodigoProducto']; ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtnombreP" class="form-label">Nombre del producto</label>
+                        <input type="text" class="form-control" id="txtnombreP" placeholder="Pluma" name="nombre" value="<?php echo $producto['NombreProducto']; ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtdescrip" class="form-label">Descripcion del producto</label>
+                        <textarea class="form-control" id="txtdescrip" rows="3" name="descripcion" value=""><?php echo $producto['DescripcionProducto']; ?></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="opccategoria" class="form-label">Categoria del producto</label>
+                        <select id="opccategoria" class="form-select" name="categoria" >
+                        <option selected disable>Seleccione una categoria</option>
+                        <?php 
+                        $conexion = mysqli_connect("localhost", "root", "", "mydb");
+                        if (!$conexion) {
+                            die("Conexión fallida: " . mysqli_connect_error());
+                        }
 
-                      $sql = $conexion->query("SELECT * FROM CategoriaProducto");
-                      while($resultado = $sql->fetch_assoc()){
-                        echo "<option value='".$resultado['idCategoriaProducto']."'>".$resultado['NombreCategoria']."</option>";
-                      }
-                    ?>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="txtcantidad" class="form-label">Cantidad del piezas en inventario</label>
-                    <input type="text" class="form-control" id="txtcantidad" placeholder="10" name="cantidad">
-                </div>
-                <div class="mb-3">
-                    <label for="txtprecio" class="form-label">Precio del producto</label>
-                    <input type="text" class="form-control" id="txtprecio" placeholder="$35" name="precio">
-                </div>
-                <div class="mb-3">
-                    <label for="txtimg" class="form-label">Imagen del producto</label>
-                    <input type="text" class="form-control" id="txtimg" placeholder="URL" name="imagen">
-                </div>
+                        $sql = $conexion->query("SELECT * FROM CategoriaProducto");
+                        while($resultado = $sql->fetch_assoc()){
+                            echo "<option value='".$resultado['idCategoriaProducto']."'>".$resultado['NombreCategoria']."</option>";
+                        }
+                        ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtcantidad" class="form-label">Cantidad del piezas en inventario</label>
+                        <input type="text" class="form-control" id="txtcantidad" placeholder="10" name="cantidad" value="<?php echo $producto['CantidadProducto']; ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtprecio" class="form-label">Precio del producto</label>
+                        <input type="text" class="form-control" id="txtprecio" placeholder="$35" name="precio" value="<?php echo $producto['precioProducto']; ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtimg" class="form-label">Imagen del producto</label>
+                        <input type="text" class="form-control" id="txtimg" placeholder="URL" name="imagen" value="<?php echo $producto['imagenProducto']; ?>">
+                    </div>
                     <div class="mt-3">
                     <button type="submit" class="btn btn-success mx-3 mb-3">Crear</button>
                     </div>
                 </form>
+                <?php } ?>
             </div>
             <div class="col-12 col-md-8">
                 <table class="table tb">
@@ -136,7 +179,9 @@ session_start();
                         <td><?php echo $row['CantidadProducto']; ?></td>
                         <td><?php echo $row['precioProducto']; ?></td>
                         <td>
-                            <a href="./updateproductos.php?id=<?php echo $row['idProductos']; ?>" class="btn btn-warning" id="edit-btn" ><img src="img/editar.png" alt="update" width="20px"></a>
+                            <?php foreach ($productos as $producto) {?>
+                            <a href="./updateproductos.php?id=<?php echo $producto['idProductos']; ?>" class="btn btn-warning" id="edit-btn"><img src="img/editar.png" alt="update" width="20px"></a>
+                            <?php } ?>
                             <a href="delete.php?id=<?php echo $row['id']; ?>" class="btn btn-danger"><img src="img/basura.png" alt="delete" width="20px"></a>
                         </td>
                     </tr>
@@ -154,51 +199,12 @@ session_start();
         
     </div>
 
-    <?php include("views/modproducto.php"); ?>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <!-- JS -->
-    <script>
-      let editarmodal = document.getElementById('modProducto');
-      editarmodal.addEventListener('shown.bs.modal', event =>{
-        let button = event.relatedTarget;
-        let id = button.getAttribute('data-bs-id');
-        
-        let inputId = editarmodal.querySelector('.modal-body #id')
-        let inputCodigo = editarmodal.querySelector('.modal-body #txtcodigo')
-        let inputNombre = editarmodal.querySelector('.modal-body #txtnombreP')
-        let inputDescrip = editarmodal.querySelector('.modal-body #txtdescrip')
-        let inputCategoria = editarmodal.querySelector('.modal-body #opccategoria')
-        let inputCantidad = editarmodal.querySelector('.modal-body #txtcantidad')
-        let inputPrecio = editarmodal.querySelector('.modal-body #txtprecio')
-        let inputImagen = editarmodal.querySelector('.modal-body #txtimg')
-
-        let url = "getProducto.php";
-        let formData = new FormData();
-        formData.append('id', id);
-
-        fetch(url, {
-          method: "POST",
-          body: formData
-        }).then(response => response.json())
-        .then(data =>{
-
-          inputId.value = data.id
-          inputCodigo.value = data.codigo
-          inputNombre.value = data.nombre
-          inputDescrip.value = data.descripcion
-          inputCategoria.value = data.categoria
-          inputCantidad.value = data.cantidad
-          inputPrecio.value = data.precio
-          inputImagen.value = data.imagen
-
-        }).catch(err => console.log(err));
-
-
-      })
-    </script>
+    
 </body>
 </html>
