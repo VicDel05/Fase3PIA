@@ -1,11 +1,11 @@
 <?php
-session_start();
+    session_start();
 
-// Verificar si el usuario ha iniciado sesión y es administrador
-if (!isset($_SESSION['correo']) || $_SESSION['rol'] != 1) {
-    header("Location: login.php");
-    exit;
-}
+    // Verificar si el usuario ha iniciado sesión y es administrador
+    if (!isset($_SESSION['correo']) || $_SESSION['rol'] != 1) {
+        header("Location: login.php");
+        exit;
+    }
 
 ?>
 
@@ -24,16 +24,22 @@ if (!isset($_SESSION['correo']) || $_SESSION['rol'] != 1) {
 
     <nav class="navbar navbar-expand-lg barraNav">
         <div class="container-fluid">
-          <a class="navbar-brand" href="inicioAdmin.php"><img src="img/QC-logo.png" alt="Logo" width="75px" class="rounded"></a>
+            <a class="navbar-brand" href="inicioAdmin.php"><img src="img/QC-logo.png" alt="Logo" width="75px" class="rounded"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
-        <div class="d-flex mx-3">
-            <a href="logout.php"><img src="./img/cerrar-sesion.png" alt="logout" class="img-fluid imglogout"></a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="logout.php"><img src="./img/cerrar-sesion.png" alt="logout" class="img-fluid mx-3 imglogout"></a>
+                </li>
+            </ul>
         </div>
     </nav>
     
     <div class="container mt-5">
-
-        <?php echo "<h1>Bienvenido, " . $_SESSION['correo'] . "!</h1>"; ?>
+        <?php echo "<h1>Bienvenido, " . $_SESSION['nombre'] . "!</h1>"; ?>
         <div class="row opc">
             <div class="col-12 col-md-6 mb-3" id="reg">
                 <a href="registro.php" class="text-white links">
@@ -56,7 +62,6 @@ if (!isset($_SESSION['correo']) || $_SESSION['rol'] != 1) {
                 </a>
             </div>
         </div>
-
     </div>
 
     <!-- Bootstrap JS -->
