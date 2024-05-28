@@ -26,7 +26,7 @@ if (isset($_POST['codigo']) && isset($_POST['nombre']) && isset($_POST['descripc
     $query = "INSERT INTO Productos (CodigoProducto, NombreProducto, DescripcionProducto, CantidadProducto, precioProducto, CategoriaProducto_idCategoriaProducto, imagenProducto) VALUES ('$codigo', '$nombre', '$descripcion', '$cantidad', '$precio', '$categoria', '$imagen')"; 
     if (mysqli_query($conexion, $query)) {
         echo "Registro exitoso.";
-        header("Location: registroproductos.php"); 
+        header("Location: views/modprodreg.php"); 
     } else {
         echo "Error: " . $query . "<br>" . mysqli_error($conexion);
     }

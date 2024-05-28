@@ -12,9 +12,46 @@
       die("Conexión fallida: " . mysqli_connect_error());
   }
 
+  $idEtiqueta = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+  $sql = "SELECT * FROM Usuarios WHERE idUsuarios = $idEtiqueta";
+  $res = $conexion->query($sql);
+
   $query = "SELECT * FROM Usuarios INNER JOIN Roles ON Usuarios.Roles_idRoles = Roles.idRoles";
   $result = $conexion->query($query);
 
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Datos del formulario
+    $nombre = $_POST['nombre'];
+    $apellidop = $_POST['apeillidop'];
+    $apellidom = $_POST['apeillidom'];
+    $correo = $_POST['correo'];
+    $pass = $_POST['contrasena'];
+    $rol = $_POST['rol'];
+    // Actualiza la etiqueta
+    
+    $sql = "UPDATE Usuarios SET NombreUsuaros ='$nombre', ApellidopUsuarios='$apellidop', ApellidomUsuario='$apellidom',CorreoUsuario='$correo', ContrasenaUsuario='$pass', Roles_idRoles='$rol' WHERE idUsuarios='$idEtiqueta'"; 
+
+    // Vincular parámetros y ejecutar la consulta
+    
+    $exc = $conexion->query($sql);
+    // Redirigir después de la actualización
+    header("Location: registro.php");
+    exit();
+    }
+
+    if ($res->num_rows > 0) {
+    // Crear un array para almacenar los datos de las etiquetas
+    $usuarios = array();
+
+    // Recorrer los resultados y guardarlos en el array
+    while ($fila = $res->fetch_assoc()) {
+        $usuarios[] = $fila;
+    }
+    } else {
+    // Si no hay resultados, mostrar un mensaje
+    echo "<p>No se encontraron usuarios.</p>";
+    }
   mysqli_close($conexion);
 
 ?>
@@ -64,21 +101,23 @@
       <h1 class="fw-normal mt-3">Registro de usuarios</h1>
       <div class="row">
         <div class="col-12 col-md-4">
-          <form action="validar-usuario.php" method="POST">
+        <?php foreach ($usuarios as $usuario) {  ?>
+          <form action="" method="POST">
+            
             <label class="mt-2" for="txtnombre">Nombre</label>
-            <input type="text" class="form-control" name="nombre" id="txtnombre">
+            <input type="text" class="form-control" name="nombre" id="txtnombre" value="<?php echo $usuario['NombreUsuaros']; ?>">
             <label class="mt-2" for="txtapellidop">Apellido Parteno</label>
-            <input type="text" class="form-control" name="apeillidop" id="txtapellidop">
+            <input type="text" class="form-control" name="apeillidop" id="txtapellidop" value="<?php echo $usuario['ApellidopUsuarios']; ?>">
             <label class="mt-2" for="txtapellidom">Apellido Materno</label>
-            <input type="text" class="form-control" name="apeillidom" id="txtapellidom">
+            <input type="text" class="form-control" name="apeillidom" id="txtapellidom" value="<?php echo $usuario['ApellidomUsuario']; ?>">
             <label class="mt-2" for="txtcorreo">Correo</label>
-            <input type="text" class="form-control" name="correo" id="txtcorreo" placeholder="example@gmail.com">
+            <input type="text" class="form-control" name="correo" id="txtcorreo" placeholder="example@gmail.com" value="<?php echo $usuario['CorreoUsuario']; ?>">
             <label class="mt-2" for="txtpass">Contraseña</label>
-            <input type="password" class="form-control" name="contrasena" id="txtpass">
+            <input type="password" class="form-control" name="contrasena" id="txtpass" value="<?php echo $usuario['ContrasenaUsuario']; ?>">
             <label for="rol" class="form-label">Rol</label>
             <select id="rol" class="form-select" name="rol">
               <option selected disable>Seleccione un rol</option>
-              <?php 
+                <?php 
                       $conexion = mysqli_connect("localhost", "root", "", "mydb");
                       if (!$conexion) {
                           die("Conexión fallida: " . mysqli_connect_error());
@@ -88,12 +127,13 @@
                       while($resultado = $sql->fetch_assoc()){
                         echo "<option value='".$resultado['idRoles']."'>".$resultado['NombreRol']."</option>";
                       }
-                    ?>
+                ?>
             </select>
             <div class="mt-3">
                 <button type="submit" class="btn btn-success mx-3 mb-3">Crear</button>
             </div>
           </form>
+        <?php } ?>
         </div>
         <div class="col-12 col-md-8">
           <table class="table ">

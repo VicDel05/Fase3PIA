@@ -53,7 +53,7 @@ session_start();
     }
     } else {
     // Si no hay resultados, mostrar un mensaje
-    echo "<p>No se encontraron etiquetas.</p>";
+    echo "<p>No se encontraron productos.</p>";
 }
 
   mysqli_close($conexion);
@@ -165,6 +165,7 @@ session_start();
                             <th>Categoria</th>
                             <th>Cantidad</th>
                             <th>Precio</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody id="tablaproducto">
