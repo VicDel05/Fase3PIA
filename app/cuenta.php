@@ -77,43 +77,43 @@ $usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
         </div>
         <div class="col-12 col-md-4 mt-3">
             <h3>Dirección</h3>
-            <form action="">
-                <label for="" class="form-label">Codigo postal</label>
-                <input type="text" name="" id="" class="form-control">
-                <label for="" class="form-label">Calle</label>
-                <input type="text" name="" id="" class="form-control">
-                <label for="" class="form-label">Numero</label>
-                <input type="text" name="" id="" class="form-control">
-                <label for="" class="form-label">Colonia</label>
-                <input type="text" name="" id="" class="form-control">
-                <label for="" class="form-label">Municipio</label>
-                <input type="text" name="" id="" class="form-control">
-                <label for="" class="form-label">Entre calles</label>
-                <input type="text" name="" id="" class="form-control">
+            <form action="validar-direccion.php" method="POST">
+                <label for="txtcp" class="form-label">Codigo postal</label>
+                <input type="text" name="cp" id="txtcp" class="form-control" required>
+                <label for="txtcalle" class="form-label">Calle</label>
+                <input type="text" name="calle" id="txtcalle" class="form-control" required>
+                <label for="txtnumero" class="form-label">Numero</label>
+                <input type="text" name="numero" id="txtnumero" class="form-control" required>
+                <label for="txtcolonia" class="form-label">Colonia</label>
+                <input type="text" name="colonia" id="txtcolonia" class="form-control" required>
+                <label for="txtmunicipio" class="form-label">Municipio</label>
+                <input type="text" name="municipio" id="txtmunicipio" class="form-control" required>
+                <label for="txtentrecalles" class="form-label">Entre calles</label>
+                <input type="text" name="entrecalles" id="txtentrecalles" class="form-control">
                 <div class="mt-3">
-                    <a href="" class="btn btn-primary">Enviar</a>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
                 </div>
             </form>
         </div>
         <div class="col-12 col-md-4 mt-3">
             <h3>Metodo de pago</h3>
-            <form action="">
-                <label for="" class="form-label">Número de tarjeta</label>
-                <input type="text" name="" id="" class="form-control">
-                <label for="" class="form-label">Titular de la tarjeta</label>
-                <input type="text" name="" id="" class="form-control">
-                <label for="" class="form-label">Tipo de tarjeta</label>
-                <select value="" class="form-select">
+            <form action="validar-metodopago.php" method="POST">
+                <label for="txtnumerotarjeta" class="form-label">Número de tarjeta</label>
+                <input type="text" name="numerotarjeta" id="txtnumerotarjeta" class="form-control">
+                <label for="txttitular" class="form-label">Titular de la tarjeta</label>
+                <input type="text" name="titular" id="txttitular" class="form-control">
+                <label for="txtmetodopago" class="form-label">Tipo de tarjeta</label>
+                <select class="form-select" name="metodpago" id="txtmetodopago">
                     <option selected disable>Selecciona el tipo de tarjeta</option>
-                    <option name="" id="">Credito</option>
-                    <option name="" id="">Debito</option>
+                    <option value="Credito">Credito</option>
+                    <option value="Debito">Debito</option>
                 </select>
-                <label for="" class="form-label">Fecha de vencimiento</label>
-                <input type="text" name="" id="" class="form-control" placeholder="12/24">
-                <label for="" class="form-label">CVV</label>
-                <input type="text" name="" id="" class="form-control">
+                <label for="txtfechaven" class="form-label">Fecha de vencimiento</label>
+                <input type="text" name="fechaven" id="txtfechaven" class="form-control" placeholder="2024/12/01">
+                <label for="txtcvv" class="form-label">CVV</label>
+                <input type="text" name="cvv" id="txtcvv" class="form-control">
                 <div class="mt-3">
-                    <a href="" class="btn btn-primary">Enviar</a>
+                  <button type="submit" class="btn btn-primary">Enviar</button>
                 </div>
             </form>
         </div>
