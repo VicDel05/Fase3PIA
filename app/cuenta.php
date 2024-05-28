@@ -66,11 +66,11 @@ $usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
                 <div class="text-center">
                     <img src="img/usuario (1).png" alt="user" class="img-fluid" width="200px">
                 </div>
-                <h4 class="fw-lighter mt-3">Usuario: <?= htmlspecialchars($_SESSION["nombre"]) ?></h4>  
+                <h4 class="fw-lighter mt-3">Usuario: <?= htmlspecialchars($_SESSION["nombre"]) ?> <?= htmlspecialchars($_SESSION["apellidop"]) ?> <?= htmlspecialchars($_SESSION["apellidom"]) ?></h4>  
                 <h4 class="fw-lighter">Correo: <?= htmlspecialchars($_SESSION["email"]) ?></h4> 
                 <div class="mt-3 text-center">
-                    <a href="" class="btn btn-dark">Direcciones</a>
-                    <a href="" class="btn btn-dark">Metodos de pago</a>
+                    <a href="#" type="button" class="btn btn-dark mt-2" data-bs-toggle="modal" data-bs-target="#dirModal">Direcciones</a>
+                    <a href="#" class="btn btn-dark mt-2 ">Historial de pedidos</a>
                 </div>
             </div>
           </div>
@@ -119,6 +119,8 @@ $usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
         </div>
       </div>
     </div>
+
+    <?php include 'views/modadirecciones.php'; ?>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
