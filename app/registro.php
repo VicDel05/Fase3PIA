@@ -97,35 +97,35 @@
         </div>
         <div class="col-12 col-md-8">
           <table class="table ">
-                      <thead>
-                          <tr>
-                              <th>ID</th>
-                              <th>Nombre</th>
-                              <th>Correo</th>
-                              <th>Rol</th>
-                              <th></th>
-                          </tr>
-                      </thead>
-                      <tbody id="tablaproducto">
-                      <?php if ($result->num_rows > 0): ?>
-                      <?php while($row = $result->fetch_assoc()): ?>
-                      <tr>
-                          <td><?php echo $row['idUsuarios']; ?></td>
-                          <td><?php echo $row['NombreUsuaros']; ?></td>
-                          <td><?php echo $row['CorreoUsuario']; ?></td>
-                          <td><?php echo $row['NombreRol']; ?></td>
-                          <td>
-                              <a href="./updateusuario.php?id=<?php echo $row['idUsuarios']; ?>" class="btn btn-warning" id="edit-btn"><img src="img/editar.png" alt="update" width="20px"></a>
-                              <a href="delete.php?id=<?php echo $row['id']; ?>" class="btn btn-danger"><img src="img/basura.png" alt="delete" width="20px"></a>
-                          </td>
-                      </tr>
-                            <?php endwhile; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="4" class="text-center">No hay registros</td>
-                            </tr>
-                        <?php endif; ?>
-                      </tbody>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Rol</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tablaproducto">
+              <?php if ($result->num_rows > 0): ?>
+                <?php while($row = $result->fetch_assoc()): ?>
+                  <tr>
+                    <td><?php echo $row['idUsuarios']; ?></td>
+                    <td><?php echo $row['NombreUsuaros']; ?></td>
+                    <td><?php echo $row['CorreoUsuario']; ?></td>
+                    <td><?php echo $row['NombreRol']; ?></td>
+                    <td>
+                      <a href="./updateusuario.php?id=<?php echo $row['idUsuarios']; ?>" class="btn btn-warning" id="edit-btn"><img src="img/editar.png" alt="update" width="20px"></a>
+                      <a href="delete.php?id=<?php echo $row['id']; ?>" class="btn btn-danger"><img src="img/basura.png" alt="delete" width="20px"></a>
+                    </td>
+                  </tr>
+                <?php endwhile; ?>
+                <?php else: ?>
+                  <tr>
+                    <td colspan="4" class="text-center">No hay registros</td>
+                  </tr>
+              <?php endif; ?>
+            </tbody>
           </table>
         </div>
       </div>

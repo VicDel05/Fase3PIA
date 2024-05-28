@@ -18,7 +18,8 @@ if (isset($_SESSION['correo'])) {
 
         // Ejecutar la consulta
         if (mysqli_query($conexion, $consulta)) {
-            echo "Comentario publicado exitosamente.";
+            header("Location: comentario.php");
+            // echo "Comentario publicado exitosamente.";
         } else {
             echo "Error al publicar el comentario: " . mysqli_error($conexion);
         }

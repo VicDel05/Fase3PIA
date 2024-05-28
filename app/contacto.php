@@ -1,6 +1,6 @@
 <?php
-session_start();
-$usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
+  session_start();
+  $usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
 ?>
 
 <!DOCTYPE html>

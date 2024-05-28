@@ -1,12 +1,15 @@
 <?php
-if (!isset($_SESSION)) {
   session_start();
-}
 
-$conexion = mysqli_connect("localhost", "root", "", "mydb");
-if (!$conexion) {
-  die("Conexión fallida: " . mysqli_connect_error());
-}
+  if (!isset($_SESSION['correo']) || $_SESSION['rol'] != 2) {
+    header("Location: login.php");
+    exit;
+  }
+
+  $conexion = mysqli_connect("localhost", "root", "", "mydb");
+  if (!$conexion) {
+    die("Conexión fallida: " . mysqli_connect_error());
+  }
 ?>
 
 <!DOCTYPE html>

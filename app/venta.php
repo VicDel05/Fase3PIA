@@ -1,11 +1,18 @@
 <?php
-session_start();
+  session_start();
 
-// Verificar si el usuario ha iniciado sesión y es administrador
-if (!isset($_SESSION['correo']) || $_SESSION['rol'] != 1) {
-    header("Location: login.php");
-    exit;
-}
+  // Verificar si el usuario ha iniciado sesión y es administrador
+  if (!isset($_SESSION['correo']) || $_SESSION['rol'] != 1) {
+      header("Location: login.php");
+      exit;
+  }
+  $conexion = mysqli_connect("localhost", "root", "", "mydb");
+  if (!$conexion) {
+      die("Conexión fallida: " . mysqli_connect_error());
+  }
+
+  $query = "SELECT * FROM Ventas INNER JOIN Usuarios ON Ventas.Usuarios_idUsuarios = Usuarios.idUsuarios";
+  $result = $conexion->query($query);
 
 ?>
 
@@ -57,14 +64,26 @@ if (!isset($_SESSION['correo']) || $_SESSION['rol'] != 1) {
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Cantidad</th>
-                    <th>Fecha</th>
                     <th>Usuario</th>
+                    <th>Fecha</th>
                     <th>Tipo de pago</th>
                 </tr>
             </thead>
             <tbody id="ventas">
-
+              <?php if ($result->num_rows > 0): ?>
+                <?php while($row = $result->fetch_assoc()): ?>
+                  <tr>
+                    <td><?php echo $row['idVentas']; ?></td>
+                    <td><?php echo $row['Usuarios_idUsuarios']; ?></td>
+                    <td><?php echo $row['fechaVenta']; ?></td>
+                    <td><?php echo $row['MetodoPago_idMetodoPago']; ?></td>
+                  </tr>
+                    <?php endwhile; ?>
+                      <?php else: ?>
+                  <tr>
+                    <td colspan="4" class="text-center">No hay registros</td>
+                  </tr>
+                    <?php endif; ?>
             </tbody>
         </table>
     </div>
