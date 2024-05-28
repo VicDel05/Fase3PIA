@@ -10,7 +10,7 @@ $usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
+    <title>Mi cuenta</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- CSS -->
@@ -44,7 +44,7 @@ $usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
                       <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="cuenta.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">Cuenta</a>
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="cuenta.php"><img src="img/usuario.png" alt="" class="img-fluid imglogout">Mi cuenta</a></li>
+                          <li><a class="dropdown-item" href="#"><img src="img/usuario.png" alt="" class="img-fluid imglogout">Mi cuenta</a></li>
                           <li><a class="dropdown-item" href="logout.php"><img src="img/cerrar-sesion.png" alt="logout" class="img-fluid imglogout">Cerrar sesión</a></li>
                         </ul>
                       </li>
@@ -59,25 +59,63 @@ $usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
     </nav>
 
     <div class="container">
-      <h1 class="fw-normal text-center mt-3">Papeleria Quill & Craft</h1>
-      <h3 class="fw-light text-center">"Todo para tu creatividad, al alcance de un clic"</h3>
-
       <div class="row">
-        <div class="col-12 col-md-6">
-          <p class="fw-light">Podras encontrar productos para realizar cualquier tarea ya sea escolar hasta de oficina, productos de buena calidad y con un precio accesible.</p>
-          <p class="fw-light">Dentro de nuestra seleccion de productos encontraras:</p>
-          <ul class="fw-light">
-            <li>Cuadernos</li>
-            <li>Colores, lapices y lapiceros</li>
-            <li>Boligrafos</li>
-            <li>Marcadores</li>
-            <li>Tijeras, borradores, sacapunta, pegamento en barra y líquidos</li>
-            <li>Hojas de maquina, cartulinas</li>
-            <li>Reglas y transportadores</li>
-          </ul>
+        <div class="col-12 col-md-4 mt-3">
+          <div class="card mt-3 bg-secondary">
+            <div class="card-body text-white">
+                <div class="text-center">
+                    <img src="img/usuario (1).png" alt="user" class="img-fluid" width="200px">
+                </div>
+                <h4 class="fw-lighter mt-3">Usuario: <?= htmlspecialchars($_SESSION["nombre"]) ?></h4>  
+                <h4 class="fw-lighter">Correo: <?= htmlspecialchars($_SESSION["email"]) ?></h4> 
+                <div class="mt-3 text-center">
+                    <a href="" class="btn btn-dark">Direcciones</a>
+                    <a href="" class="btn btn-dark">Metodos de pago</a>
+                </div>
+            </div>
+          </div>
         </div>
-        <div class="col-12 col-md-6">
-          <img src="./img/utiles.jpeg" alt="producto" class="img-fluid">
+        <div class="col-12 col-md-4 mt-3">
+            <h3>Dirección</h3>
+            <form action="">
+                <label for="" class="form-label">Codigo postal</label>
+                <input type="text" name="" id="" class="form-control">
+                <label for="" class="form-label">Calle</label>
+                <input type="text" name="" id="" class="form-control">
+                <label for="" class="form-label">Numero</label>
+                <input type="text" name="" id="" class="form-control">
+                <label for="" class="form-label">Colonia</label>
+                <input type="text" name="" id="" class="form-control">
+                <label for="" class="form-label">Municipio</label>
+                <input type="text" name="" id="" class="form-control">
+                <label for="" class="form-label">Entre calles</label>
+                <input type="text" name="" id="" class="form-control">
+                <div class="mt-3">
+                    <a href="" class="btn btn-primary">Enviar</a>
+                </div>
+            </form>
+        </div>
+        <div class="col-12 col-md-4 mt-3">
+            <h3>Metodo de pago</h3>
+            <form action="">
+                <label for="" class="form-label">Número de tarjeta</label>
+                <input type="text" name="" id="" class="form-control">
+                <label for="" class="form-label">Titular de la tarjeta</label>
+                <input type="text" name="" id="" class="form-control">
+                <label for="" class="form-label">Tipo de tarjeta</label>
+                <select value="" class="form-select">
+                    <option selected disable>Selecciona el tipo de tarjeta</option>
+                    <option name="" id="">Credito</option>
+                    <option name="" id="">Debito</option>
+                </select>
+                <label for="" class="form-label">Fecha de vencimiento</label>
+                <input type="text" name="" id="" class="form-control" placeholder="12/24">
+                <label for="" class="form-label">CVV</label>
+                <input type="text" name="" id="" class="form-control">
+                <div class="mt-3">
+                    <a href="" class="btn btn-primary">Enviar</a>
+                </div>
+            </form>
         </div>
       </div>
     </div>

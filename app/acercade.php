@@ -38,11 +38,11 @@ $usuario_registrado = isset($_SESSION['correo']) && isset($_SESSION['rol']);
                     <?php endif; ?>
                     <?php if ($usuario_registrado): ?>
                       <li class="nav-item"><a class="nav-link" href="comentario.php">Comentarios</a></li>
-                      <li class="nav-item"><a class="nav-link" href="#">Carrito</a></li>
+                      <li class="nav-item"><a class="nav-link" href="carrito.php">Carrito</a></li>
                       <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Cuenta</a>
+                        <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">Cuenta</a>
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#"><img src="img/usuario.png" alt="" class="img-fluid imglogout">Mi cuenta</a></li>
+                          <li><a class="dropdown-item" href="cuenta.php"><img src="img/usuario.png" alt="" class="img-fluid imglogout">Mi cuenta</a></li>
                           <li><a class="dropdown-item" href="logout.php"><img src="img/cerrar-sesion.png" alt="logout" class="img-fluid imglogout">Cerrar sesión</a></li>
                         </ul>
                       </li>
