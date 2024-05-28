@@ -12,6 +12,7 @@
 
 ?>
 
+    <h4 class="fw-light">Reporte Ventas</h4>
     <div id="printArea">
         <table class="table table-hover">
             <thead>
